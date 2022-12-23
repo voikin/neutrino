@@ -1,16 +1,16 @@
 package server
 
-import "net/http"
+import (
+
+	"github.com/labstack/echo/v4"
+)
 
 type Server struct {
-	httpServer *http.Server
+	echoServer *echo.Echo
 }
 
-func (s *Server) Run(port string, handler http.Handler) error {
-	s.httpServer = &http.Server{
-		Addr: ":" + port,
-		Handler: handler,
-	}
+func (s *Server) Run(port string, echoServer *echo.Echo) error {
+	s.echoServer = echoServer
 
-	return s.httpServer.ListenAndServe()
+	return s.echoServer.Start(port)
 }

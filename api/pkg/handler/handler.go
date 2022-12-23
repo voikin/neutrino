@@ -7,21 +7,28 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type Handler struct{
-	Logger *logger.Logger
+type Handler struct {
+	logger *logger.Logger
+	apiKey string
 }
 
-func NewHandler(logger *logger.Logger) *Handler {
+func NewHandler(logger *logger.Logger, owmApiKey string) *Handler {
 	return &Handler{
-		Logger: logger,
+		logger: logger,
+		apiKey: owmApiKey,
 	}
 }
 
 func (h *Handler) InitRoutes() *echo.Echo {
 	e := echo.New()
-	e.Use(h.Logger.LoggerMiddleware())
-	
+	e.Use(h.logger.LoggerMiddleware())
+
 	e.GET("/ping", h.ping)
+	
+	api := e.Group("/api")
+	{
+		api.POST("/weather-by-city", h.getWeatherByCity)
+	}
 
 	return e
 }

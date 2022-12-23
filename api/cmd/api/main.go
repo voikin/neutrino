@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/dazai404/neutrino/internal/server"
 	"github.com/dazai404/neutrino/pkg/handler"
@@ -13,20 +14,21 @@ import (
 func init() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Print("error: no .env file found")
+		log.Fatal("error: no .env file found")
 	}
 }
 
 func main() {
-	// apiKey := os.Getenv("OWM_API_KEY")
+	apiKey := os.Getenv("OWM_API_KEY")
+	port := os.Getenv("PORT")
 
 	zapConfig := zap.NewDevelopmentConfig()
 
 	logger := logger.NewLogger(zapConfig)
 
-	handler := handler.NewHandler(logger)
+	handler := handler.NewHandler(logger, apiKey)
 
 	srv := new(server.Server)
 
-	panic(srv.Run("8080", handler.InitRoutes()))
+	panic(srv.Run(port, handler.InitRoutes()))
 }
