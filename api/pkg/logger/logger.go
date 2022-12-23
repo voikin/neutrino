@@ -1,7 +1,7 @@
 package logger
 
 import (
-	zaplogger "github.com/dazai404/neutrino/pkg/zap-logger"
+	zaplogger "github.com/dazai404/neutrino/pkg/logger/zap-logger"
 	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
 )
