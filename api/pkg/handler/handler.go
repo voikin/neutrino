@@ -28,6 +28,7 @@ func (h *Handler) InitRoutes() *echo.Echo {
 	api := e.Group("/api")
 	{
 		api.POST("/weather-by-city", h.getWeatherByCity)
+		api.POST("/forecast-by-city", h.getForecastByCity)
 	}
 
 	return e
