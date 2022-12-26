@@ -30,15 +30,19 @@ func (h *Handler) InitRoutes() *echo.Echo {
 
 	api := e.Group("/api")
 	{
-		api.POST("/weather-by-city", h.getWeatherByCity)
-		api.POST("/forecast-by-city", h.getForecastByCity)
+		api.GET("/weather-by-city", h.getWeatherByCity)
+		api.GET("/forecast-by-city", h.getForecastByCity)
+		users := api.Group("/users")
+		{
+			users.POST("/save", h.saveTgUser)
+		}
 	}
 
 	return e
 }
 
 func (h *Handler) ping(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]string{
+	return c.JSON(http.StatusOK, jsonMap{
 		"message": "pong",
 	})
 }

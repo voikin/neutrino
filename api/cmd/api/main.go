@@ -32,8 +32,8 @@ func main() {
 	}
 
 	db := cl.Database("neutrino")
-	repository := repository.NewRepository(db)
 	zapConfig := zap.NewDevelopmentConfig()
+	repository := repository.NewRepository(db)
 	logger := logger.NewLogger(zapConfig)
 	handler := handler.NewHandler(repository, logger, apiKey)
 

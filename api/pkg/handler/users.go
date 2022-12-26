@@ -16,6 +16,9 @@ func (h *Handler) saveTgUser(e echo.Context) error {
 	if err != nil {
 		return nil
 	}
+	if input.Id == nil {
+		return echo.ErrBadRequest
+	}
 
 	id, err := h.repo.TgUserRepository.SaveTgUser(input)
 	if err != nil {
