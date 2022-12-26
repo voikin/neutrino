@@ -12,6 +12,8 @@ type Repository struct {
 
 type TgUserRepository interface {
 	SaveTgUser(user *models.TgUser) (interface{}, error)
+	GetTgUser(id int) (*models.TgUser, error)
+	UpdateTgUser(user *models.TgUser) error
 }
 
 func NewRepository(db *mongo.Database) *Repository {
