@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
     neutrino-api:
+        build: ./api/
         image: neutrino-api:latest
         ports:
             - 8080:8080

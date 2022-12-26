@@ -2,11 +2,12 @@ package handler
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	owm "github.com/briandowns/openweathermap"
-	"github.com/dazai404/neutrino/models"
 	"github.com/labstack/echo/v4"
+	"github.com/voikin/neutrino/models"
 )
 
 func (h *Handler) getWeatherByCity(e echo.Context) error {
@@ -14,18 +15,25 @@ func (h *Handler) getWeatherByCity(e echo.Context) error {
 
 	err := e.Bind(input)
 	if err != nil {
+		log.Println(err)
 		return err
 	}
+	fmt.Println(123)
 
 	w, err := owm.NewCurrent("C", "ru", h.apiKey)
 	if err != nil {
+		log.Println(err)
 		return nil
 	}
+	w.Settings
+	fmt.Println(123)
 
 	err = w.CurrentByName(input.City)
 	if err != nil {
+		log.Println(err)
 		return err
 	}
+	fmt.Println(123)
 
 	return e.JSON(http.StatusOK, *w)
 }
@@ -34,22 +42,23 @@ func (h *Handler) getForecastByCity(e echo.Context) error {
 	input := &models.RequestWithCityDays{}
 	err := e.Bind(input)
 	if err != nil {
+		log.Println(err.Error())
 		return err
 	}
 
 	w, err := owm.NewForecast("5", "C", "RU", h.apiKey)
 	if err != nil {
-		return nil
+		log.Println(err.Error())
+		return err
 	}
 
 	err = w.DailyByName(input.City, input.Days)
 	if err != nil {
+		log.Println(err.Error())
 		return err
 	}
 
 	forecast := w.ForecastWeatherJson.(*owm.Forecast5WeatherData)
-
-	fmt.Println(forecast)
 
 	out := make([]interface{}, 0)
 
@@ -59,7 +68,15 @@ func (h *Handler) getForecastByCity(e echo.Context) error {
 
 	return e.JSON(http.StatusOK, map[string]interface{}{
 		"city": forecast.City,
-		"cnt": forecast.Cnt,
+		"cnt":  forecast.Cnt,
 		"list": out,
 	})
+}
+
+func owmForecastPing() error {
+	_, err := http.Get("https://api.openweathermap.org/data/2.5/forecast?appid=91234a30076102d81d6c6b6a6f362b2c&mode=json&units=C&lang=RU&cnt=3")
+	if err != nil {
+		return err
+	}
+	return nil
 }
