@@ -5,6 +5,8 @@ import os
 
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher, executor, types
+import requests
+from wetherApi import ApiClient
 
 logging.basicConfig(level=logging.INFO)
 
@@ -21,6 +23,15 @@ async def send_welcome(message: types.Message):
     
 @dp.message_handler(commands=["weather"])
 async def get_weather(message: types.Message):
+    # if len(message.get_args().split) != 1:
+        # await message.answer(text="
+    # body = {
+    #     "city": message.get_args
+    # }
+    # print(requests.post(url="http://37.140.199.169:8080/api/weather-by-city", json=body) )
+    print(message.get_args())
+    ac = await ApiClient.connect('37.140.199.169:8080')
+    await ac.getWeather('moscow')
     await message.answer(text="введи место где ты хочешь узнать погоду")
     
     
