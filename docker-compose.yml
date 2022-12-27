@@ -3,14 +3,21 @@ version: '3.7'
 services:
     neutrino-api:
         build: ./api/
-        image: neutrino-api:latest
         ports:
-            - 8080:8080
+            - 8000:8080
+        networks:
+            - mdb
     mongo:
-    image: mongo
-    restart: always
-    environment:
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: root
-    ports:
-        - 27017:27017
+        image: mongo
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: root
+        ports:
+            - 27017:27017
+        networks:
+            - mdb
+
+networks:
+    mdb:
+        driver: bridge

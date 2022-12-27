@@ -12,7 +12,6 @@ type jsonMap map[string]interface{}
 
 func (h *Handler) saveTgUser(e echo.Context) error {
 	input := &models.TgUser{}
-
 	err := e.Bind(input)
 	if err != nil {
 		return err
@@ -20,9 +19,7 @@ func (h *Handler) saveTgUser(e echo.Context) error {
 	if input.UserId == nil {
 		return echo.ErrBadRequest
 	}
-
-	us, err := h.repo.GetTgUser(*input.UserId)
-	fmt.Println(us, err)
+	_, err = h.repo.GetTgUser(*input.UserId)
 	if err == nil {
 		err = h.repo.TgUserRepository.UpdateTgUser(input)
 		fmt.Println(err)
@@ -33,12 +30,10 @@ func (h *Handler) saveTgUser(e echo.Context) error {
 			"message": "successfully updated",
 		})
 	}
-
 	id, err := h.repo.TgUserRepository.SaveTgUser(input)
 	if err != nil {
 		return nil
 	}
-
 	return e.JSON(http.StatusCreated, jsonMap{
 		"message": "successfully created",
 		"id":      id,
