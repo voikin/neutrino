@@ -2,7 +2,7 @@ package models
 
 type Weather struct {
 	CurrentCondition []*struct {
-		FeelsLike   string `json:"FeelsLikeC"`
+		FeelsLike   string `json:"feelsLikeC"`
 		Cloudcover  string `json:"cloudcover"`
 		Humidity    string `json:"humidity"`
 		Pressure    string `json:"pressure"`

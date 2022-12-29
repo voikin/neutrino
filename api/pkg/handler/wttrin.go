@@ -12,7 +12,9 @@ import (
 
 func (h *Handler) getWeatherByCity(e echo.Context) error {
 	city := e.QueryParam("city")
-	fmt.Println("city: ", city)
+	if city == "" {
+		return echo.ErrBadRequest
+	}
 
 	res, err := http.Get(fmt.Sprintf("http://wttr.in/%s?format=j2", city))
 	if err != nil {
@@ -31,7 +33,15 @@ func (h *Handler) getWeatherByCity(e echo.Context) error {
 
 func (h *Handler) getForecastByCity(e echo.Context) error {
 	city := e.QueryParam("city")
+	if city == "" {
+		return echo.ErrBadRequest
+	}
+
 	daysString := e.QueryParam("days")
+	if daysString == "" {
+		return echo.ErrBadRequest
+	}
+
 	days, err := strconv.Atoi(daysString)
 	if err != nil {
 		return err
