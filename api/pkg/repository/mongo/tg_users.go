@@ -33,7 +33,7 @@ func (mr *MongoRepository) GetTgUser(id int) (*models.TgUser, error) {
 
 	err := coll.FindOne(
 		context.Background(),
-		bson.D{{"_id", id}},
+		bson.D{{Key: "_id", Value: id}},
 	).Decode(user)
 
 	if err != nil {
@@ -48,7 +48,7 @@ func (mr *MongoRepository) UpdateTgUser(user *models.TgUser) error {
 
 	_, err := coll.ReplaceOne(
 		context.Background(),
-		bson.D{{"_id", user.UserId}},
+		bson.D{{Key: "_id", Value: user.UserId}},
 		user,
 	)
 	if err != nil {
