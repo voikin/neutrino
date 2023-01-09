@@ -6,5 +6,5 @@ type RequestWithCity struct {
 
 type RequestWithCityDays struct {
 	City string `json:"city"`
-	Days int `json:"days"`
+	Days int    `json:"days"`
 }
