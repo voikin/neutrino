@@ -5,3 +5,5 @@ services:
         build: ./api/
         ports:
             - 80:8080
+        env_file:
+            - ./api/.env
