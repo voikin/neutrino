@@ -8,6 +8,10 @@ async def on_startup(dp):
 
     await notify_admins(dp)
 
+    from utils.db import dbSettings
+
+    await dbSettings.create_db()
+
     print("Бот запущен")
 
 
