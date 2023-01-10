@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher, executor, types
 import requests
-from wetherApi import ApiClient
+from weatherApi import ApiClient
 
 logging.basicConfig(level=logging.INFO)
 
@@ -24,7 +24,7 @@ async def send_welcome(message: types.Message):
 @dp.message_handler(commands=["weather"])
 async def get_weather(message: types.Message):
     # if len(message.get_args().split) != 1:
-        # await message.answer(text="
+        # await message.answer(text.py="
     # body = {
     #     "city": message.get_args
     # }
