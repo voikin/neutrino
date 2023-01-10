@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/voikin/neutrino/models"
@@ -17,6 +18,7 @@ func (h *Handler) saveTgUser(e echo.Context) error {
 	if err != nil {
 		return err
 	}
+	input.CreatedAt = time.Now().UTC().Add(time.Hour * 3)
 	if input.UserId == nil {
 		return echo.ErrBadRequest
 	}
@@ -41,7 +43,7 @@ func (h *Handler) saveTgUser(e echo.Context) error {
 }
 
 func (h *Handler) getTgUser(e echo.Context) error {
-	idStr := e.QueryParam("id")
+	idStr := e.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		return err
@@ -52,13 +54,11 @@ func (h *Handler) getTgUser(e echo.Context) error {
 		return err
 	}
 
-	return e.JSON(http.StatusOK, jsonMap{
-		"user": user,
-	})
+	return e.JSON(http.StatusOK, user)
 }
 
 func (h *Handler) deleteTgUser(e echo.Context) error {
-	idStr := e.QueryParam("id")
+	idStr := e.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		return err
