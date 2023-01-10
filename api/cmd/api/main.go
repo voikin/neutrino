@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 
@@ -25,8 +26,10 @@ func init() {
 func main() {
 	apiKey := os.Getenv("OWM_API_KEY")
 	port := os.Getenv("PORT")
+	atlasUser := os.Getenv("ATLAS_USER")
+	atlasPwd := os.Getenv("ATLAS_PWD")
 
-	cl, err := mongo.Connect(context.Background(), options.Client().ApplyURI("mongodb://root:root@localhost:27017"))
+	cl, err := mongo.Connect(context.Background(), options.Client().ApplyURI(fmt.Sprintf("mongodb+srv://%s:%s@neutrino.oicq8th.mongodb.net/?retryWrites=true&w=majority", atlasUser, atlasPwd)))
 	if err != nil {
 		log.Fatal(err)
 	}

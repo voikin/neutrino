@@ -2,6 +2,7 @@ package mongo_repo
 
 import (
 	"context"
+	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -10,7 +11,8 @@ import (
 const tgUsersCollection = "tg_users"
 
 func NewMongoDBConnection(mongoURI string) (*mongo.Database, error) {
-	cl, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
+	ctx, _ := context.WithTimeout(context.Background(), time.Second * 5)
+	cl, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoURI))
 	if err != nil {
 		return nil, err
 	}

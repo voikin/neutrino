@@ -23,7 +23,7 @@ func (h *Handler) getWeatherByCity(e echo.Context) error {
 
 	forecast := &models.Forecast{}
 	json.NewDecoder(res.Body).Decode(forecast)
-	
+
 	curWeather := getCurrentWeather(forecast)
 
 	return e.JSON(http.StatusOK, curWeather)
@@ -73,44 +73,44 @@ func getCurrentWeather(forecast *models.Forecast) *models.CurrentWeather {
 	weatherDesc := forecast.CurrentCondition[0].WeatherDesc[0]
 	forecastCurCond := forecast.CurrentCondition[0]
 	curCond := &models.CurrentCondition{
-		FeelsLike: forecastCurCond.FeelsLike,
-		Cloudcover: forecastCurCond.Cloudcover,
-		Humidity: forecastCurCond.Humidity,
-		Pressure: forecastCurCond.Pressure,
-		Temp: forecastCurCond.Temp,
-		UvIndex: forecastCurCond.UvIndex,
-		Visibility: forecastCurCond.Visibility,
-		WeatherCode: forecastCurCond.WeatherCode,
-		WeatherDesc: weatherDesc,
+		FeelsLike:      forecastCurCond.FeelsLike,
+		Cloudcover:     forecastCurCond.Cloudcover,
+		Humidity:       forecastCurCond.Humidity,
+		Pressure:       forecastCurCond.Pressure,
+		Temp:           forecastCurCond.Temp,
+		UvIndex:        forecastCurCond.UvIndex,
+		Visibility:     forecastCurCond.Visibility,
+		WeatherCode:    forecastCurCond.WeatherCode,
+		WeatherDesc:    weatherDesc,
 		WindDir16Point: forecastCurCond.WindDir16Point,
-		WindDirDegree: forecastCurCond.WindDirDegree,
-		WindSpeedKmPh: forecastCurCond.WindSpeedKmPh,
+		WindDirDegree:  forecastCurCond.WindDirDegree,
+		WindSpeedKmPh:  forecastCurCond.WindSpeedKmPh,
 	}
 	nearArea := &models.NearestArea{
-		AreaName: (*models.AreaName)(forecast.NearestArea[0].AreaName[0]),
-		Latitude: forecast.NearestArea[0].Latitude,
+		AreaName:  (*models.AreaName)(forecast.NearestArea[0].AreaName[0]),
+		Latitude:  forecast.NearestArea[0].Latitude,
 		Longitude: forecast.NearestArea[0].Longitude,
 	}
 	astrForecast := forecast.Weather[0].Astronomy[0]
 	astr := &models.Astronomy{
 		Moonrise: astrForecast.Moonrise,
-		Moonset: astrForecast.Moonset,
-		Sunrise: astrForecast.Sunrise,
-		Sunset: astrForecast.Sunset,
+		Moonset:  astrForecast.Moonset,
+		Sunrise:  astrForecast.Sunrise,
+		Sunset:   astrForecast.Sunset,
 	}
 	weatherForecast := forecast.Weather[0]
 	weather := &models.Weather{
 		Astronomy: astr,
-		Date: weatherForecast.Date,
-		AvgTemp: weatherForecast.AvgTemp,
-		MaxTemp: weatherForecast.MaxTemp,
-		MinTemp: weatherForecast.MinTemp,
-		SunHour: weatherForecast.SunHour,
+		Date:      weatherForecast.Date,
+		AvgTemp:   weatherForecast.AvgTemp,
+		MaxTemp:   weatherForecast.MaxTemp,
+		MinTemp:   weatherForecast.MinTemp,
+		SunHour:   weatherForecast.SunHour,
 	}
 	return &models.CurrentWeather{
 		CurrentCondition: curCond,
-		NearestArea: nearArea,
-		Weather: weather,
+		NearestArea:      nearArea,
+		Weather:          weather,
 	}
 }
 
@@ -119,23 +119,23 @@ func getCurrentForecast(forecast *models.Forecast) *models.CurrentForecast {
 	forecastCurCond := forecast.CurrentCondition[0]
 
 	curCond := &models.CurrentCondition{
-		FeelsLike: forecastCurCond.FeelsLike,
-		Cloudcover: forecastCurCond.Cloudcover,
-		Humidity: forecastCurCond.Humidity,
-		Pressure: forecastCurCond.Pressure,
-		Temp: forecastCurCond.Temp,
-		UvIndex: forecastCurCond.UvIndex,
-		Visibility: forecastCurCond.Visibility,
-		WeatherCode: forecastCurCond.WeatherCode,
-		WeatherDesc: weatherDesc,
+		FeelsLike:      forecastCurCond.FeelsLike,
+		Cloudcover:     forecastCurCond.Cloudcover,
+		Humidity:       forecastCurCond.Humidity,
+		Pressure:       forecastCurCond.Pressure,
+		Temp:           forecastCurCond.Temp,
+		UvIndex:        forecastCurCond.UvIndex,
+		Visibility:     forecastCurCond.Visibility,
+		WeatherCode:    forecastCurCond.WeatherCode,
+		WeatherDesc:    weatherDesc,
 		WindDir16Point: forecastCurCond.WindDir16Point,
-		WindDirDegree: forecastCurCond.WindDirDegree,
-		WindSpeedKmPh: forecastCurCond.WindSpeedKmPh,
+		WindDirDegree:  forecastCurCond.WindDirDegree,
+		WindSpeedKmPh:  forecastCurCond.WindSpeedKmPh,
 	}
 
 	nearArea := &models.NearestArea{
-		AreaName: (*models.AreaName)(forecast.NearestArea[0].AreaName[0]),
-		Latitude: forecast.NearestArea[0].Latitude,
+		AreaName:  (*models.AreaName)(forecast.NearestArea[0].AreaName[0]),
+		Latitude:  forecast.NearestArea[0].Latitude,
 		Longitude: forecast.NearestArea[0].Longitude,
 	}
 
@@ -144,17 +144,17 @@ func getCurrentForecast(forecast *models.Forecast) *models.CurrentForecast {
 		astr := item.Astronomy[0]
 		weather = append(weather, &models.Weather{
 			Astronomy: astr,
-			Date: item.Date,
-			AvgTemp: item.AvgTemp,
-			MaxTemp: item.MaxTemp,
-			MinTemp: item.MinTemp,
-			SunHour: item.SunHour,
+			Date:      item.Date,
+			AvgTemp:   item.AvgTemp,
+			MaxTemp:   item.MaxTemp,
+			MinTemp:   item.MinTemp,
+			SunHour:   item.SunHour,
 		})
 	}
 
 	return &models.CurrentForecast{
 		CurrentCondition: curCond,
-		NearestArea: nearArea,
-		Weather: weather,
+		NearestArea:      nearArea,
+		Weather:          weather,
 	}
 }
