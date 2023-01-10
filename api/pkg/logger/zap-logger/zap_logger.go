@@ -28,12 +28,13 @@ func (zl *ZapLogger) LoggerMiddleware() echo.MiddlewareFunc {
 
 		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
 			zl.logger.Info("request",
+				zap.String("method", c.Request().Method),
 				zap.String("URI", v.URI),
 				zap.Int("status", v.Status),
 			)
 			return nil
 		},
 	})
-	
+
 	return lm
 }
