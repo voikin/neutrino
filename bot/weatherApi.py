@@ -1,4 +1,8 @@
 # import requests
+import logging
+import sys
+
+import requests
 from aiohttp import ClientSession, client_exceptions
 
 
@@ -58,6 +62,15 @@ class ApiAnswer:
 class ApiClient:
     def __init__(self, url):
         self.url = url
+        try:
+            if requests.get(f"http://{self.url}/ping").status_code != 200:
+                logging.fatal("HTTP response not 200")
+                sys.exit(1)
+        except Exception as err:
+            logging.fatal(f'Can not connect to API({url})')
+            sys.exit(1)
+        logging.info("API connection established")
+
 
     async def getWeather(self, city):
         async with ClientSession() as session:
@@ -66,9 +79,11 @@ class ApiClient:
                     f"http://{self.url}/api/weather-by-city?city={city}"
                 ) as response:
                     if response.status != 200:
+                        logging.error(response.status)
                         return {}
                     return ApiAnswerForOneDay(await response.json())
-            except client_exceptions.ClientConnectorError:
+            except client_exceptions.ClientConnectorError as err:
+                logging.exception(err)
                 return {}
 
     async def getWeatherForecast(self, city, days):

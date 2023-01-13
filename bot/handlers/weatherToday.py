@@ -17,7 +17,6 @@ async def weather_now_city(message: types.Message, state: FSMContext):
     res = await api.getWeather(message.text)
     if res:
         await message.answer(str(res), reply_markup=kb_add_favorite)
-        # await mess.edit_reply_markup(kb_cancel)
         await state.finish()
     else:
         await message.reply(

@@ -1,4 +1,6 @@
-# from loader import db
+import logging
+from time import sleep
+
 from gino import Gino
 
 from data.config import POSTGRES_URI
@@ -16,6 +18,11 @@ class User_city(db.Model):
 
 
 async def create_db():
-
-    await db.set_bind(POSTGRES_URI)
+    while True:
+        try:
+            await db.set_bind(POSTGRES_URI)
+            break
+        except OSError as err:
+            logging.fatal(f'Не удалось подключиться к БД\n{err}')
+            sleep(5)
     await db.gino.create_all()

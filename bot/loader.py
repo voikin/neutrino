@@ -1,7 +1,6 @@
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher
 
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from gino import Gino
 
 from data import config
 from data.config import POSTGRES_URI

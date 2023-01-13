@@ -13,7 +13,6 @@ async def create_favorite(user_id, city):
         return 1
     except Exception as err:
         logging.exception(f'Не удалось добавить Город в отслеживание{err}', exc_info=True)
-        logging.info('')
         return -1
 
 

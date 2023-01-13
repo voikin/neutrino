@@ -2,8 +2,42 @@ version: '3.7'
 
 services:
     neutrino-api:
+        container_name: api
         build: ./api/
         ports:
             - 80:8080
         env_file:
             - ./api/.env
+        network_mode: host
+
+    db:
+        container_name: postgresql
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: root
+            POSTGRES_DB: gino
+        volumes:
+            - ./data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        network_mode: host
+    pgadmin:
+        container_name: pgadmin
+        image: dpage/pgadmin4
+        restart: always
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@admin.com
+            PGADMIN_DEFAULT_PASSWORD: root
+        ports:
+            - "5050:80"
+    bot:
+        build: ./bot/
+        env_file:
+            - ./bot/.env
+        restart: always
+        depends_on:
+            - neutrino-api
+            - db
+        network_mode: host
