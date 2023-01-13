@@ -11,9 +11,10 @@ type Repository struct {
 }
 
 type TgUserRepository interface {
-	SaveTgUser(user *models.TgUser) (interface{}, error)
+	SaveTgUser(user *models.TgUser) error
 	GetTgUser(id int) (*models.TgUser, error)
 	UpdateTgUser(user *models.TgUser) error
+	DeleteTgUser(id int) error
 }
 
 func NewRepository(db *mongo.Database) *Repository {

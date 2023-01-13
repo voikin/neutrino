@@ -1,4 +1,9 @@
 .bin
 .env
 .venv
-.DS_Store
+__pycache__/
+*.DS_Store
+.history/
+.vscode/*
+ignore/
+.idea/
