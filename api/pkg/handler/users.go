@@ -3,6 +3,8 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/voikin/neutrino/models"
@@ -16,6 +18,7 @@ func (h *Handler) saveTgUser(e echo.Context) error {
 	if err != nil {
 		return err
 	}
+	input.CreatedAt = time.Now().UTC().Add(time.Hour * 3)
 	if input.UserId == nil {
 		return echo.ErrBadRequest
 	}
@@ -26,16 +29,47 @@ func (h *Handler) saveTgUser(e echo.Context) error {
 		if err != nil {
 			return err
 		}
-		return e.JSON(http.StatusOK, jsonMap{
+		return e.JSON(http.StatusNoContent, jsonMap{
 			"message": "successfully updated",
 		})
 	}
-	id, err := h.repo.TgUserRepository.SaveTgUser(input)
+	err = h.repo.TgUserRepository.SaveTgUser(input)
 	if err != nil {
 		return nil
 	}
 	return e.JSON(http.StatusCreated, jsonMap{
 		"message": "successfully created",
-		"id":      id,
+	})
+}
+
+func (h *Handler) getTgUser(e echo.Context) error {
+	idStr := e.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return err
+	}
+
+	user, err := h.repo.TgUserRepository.GetTgUser(id)
+	if err != nil {
+		return err
+	}
+
+	return e.JSON(http.StatusOK, user)
+}
+
+func (h *Handler) deleteTgUser(e echo.Context) error {
+	idStr := e.Param("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return err
+	}
+
+	err = h.repo.TgUserRepository.DeleteTgUser(id)
+	if err != nil {
+		return err
+	}
+
+	return e.JSON(http.StatusNoContent, jsonMap{
+		"message": "successfully deleted",
 	})
 }
