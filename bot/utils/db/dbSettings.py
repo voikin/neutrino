@@ -12,6 +12,7 @@ class User_city(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, autoincrement=False)
     city = db.Column(db.String)
+    _uix = db.UniqueConstraint("user_id", "city", name="uix_1")
 
 
 async def create_db():

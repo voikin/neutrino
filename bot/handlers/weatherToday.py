@@ -1,6 +1,6 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
-from keyBoards import kb_cancel, kb_menu
+from keyBoards import kb_cancel, kb_menu, kb_add_favorite
 from loader import api, dp
 from states import WeatherToday
 from utils.text import CHOOSE_CITY, CITY_NOT_FOUND, OR_CANCEL_TEXT
@@ -16,7 +16,8 @@ async def weather_now_start(message: types.Message):
 async def weather_now_city(message: types.Message, state: FSMContext):
     res = await api.getWeather(message.text)
     if res:
-        await message.answer(str(res), reply_markup=kb_menu)
+        await message.answer(str(res), reply_markup=kb_add_favorite)
+        # await mess.edit_reply_markup(kb_cancel)
         await state.finish()
     else:
         await message.reply(
