@@ -18,21 +18,21 @@ func (h *Handler) saveTgUser(e echo.Context) error {
 	if err != nil {
 		return err
 	}
-	input.CreatedAt = time.Now().UTC().Add(time.Hour * 3)
 	if input.UserId == nil {
 		return echo.ErrBadRequest
 	}
-	_, err = h.repo.GetTgUser(*input.UserId)
+	input.UpdatedAt = time.Now().UTC()
+	tgUser, err := h.repo.GetTgUser(*input.UserId)
 	if err == nil {
+		input.CreatedAt = tgUser.CreatedAt
 		err = h.repo.TgUserRepository.UpdateTgUser(input)
 		fmt.Println(err)
 		if err != nil {
 			return err
 		}
-		return e.JSON(http.StatusNoContent, jsonMap{
-			"message": "successfully updated",
-		})
+		return e.JSON(http.StatusNoContent, nil)
 	}
+	input.CreatedAt = time.Now().UTC()
 	err = h.repo.TgUserRepository.SaveTgUser(input)
 	if err != nil {
 		return nil
@@ -69,7 +69,5 @@ func (h *Handler) deleteTgUser(e echo.Context) error {
 		return err
 	}
 
-	return e.JSON(http.StatusNoContent, jsonMap{
-		"message": "successfully deleted",
-	})
+	return e.JSON(http.StatusNoContent, nil)
 }

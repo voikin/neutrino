@@ -15,4 +15,5 @@ type TgUser struct {
 	CanReadAllGroupMessages bool      `json:"can_read_all_group_messages" bson:"can_read_all_group_messages"`
 	SupportsInlineQueries   bool      `json:"supports_inline_queries" bson:"supports_inline_queries"`
 	CreatedAt               time.Time `json:"created_at" bson:"created_at"`
+	UpdatedAt               time.Time `json:"updated_at" bson:"updated_at"`
 }
