@@ -32,9 +32,11 @@ func (h *Handler) InitRoutes() *echo.Echo {
 	{
 		api.GET("/weather-by-city", h.getWeatherByCity)
 		api.GET("/forecast-by-city", h.getForecastByCity)
-		users := api.Group("/users")
+		users := api.Group("/users", h.authBotMiddleware())
 		{
 			users.POST("/save", h.saveTgUser)
+			users.GET("/:id", h.getTgUser)
+			users.DELETE("/:id", h.deleteTgUser)
 		}
 	}
 
